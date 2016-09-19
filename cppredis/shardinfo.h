@@ -18,8 +18,7 @@
 using namespace std;
 
 class Jedis;
-class Protocol
-{
+class Protocol {
 public:
 	static const int DEFAULT_PORT = 6379;
 	static const int DEFAULT_TIMEOUT = 2000;
@@ -35,8 +34,7 @@ public:
 	static const int DEFAULT_WEIGHT = 1;
 };
 
-class ShardInfo
-{
+class ShardInfo {
 public:
 
 	ShardInfo(string host, int port = Protocol::DEFAULT_PORT, int weight = Protocol::DEFAULT_WEIGHT, string name =
@@ -49,12 +47,11 @@ public:
 		_timeout = timeout;
 		_weight = weight;
 
-	    if(_name.empty())
-	    {
-	    	char buffer[32] = {0};
-	    	snprintf(buffer, sizeof(buffer) - 1, "%s:%d", host.c_str(), port);
-	    	_name = buffer;
-	    }
+		if (_name.empty()) {
+			char buffer[32] = { 0 };
+			snprintf(buffer, sizeof(buffer) - 1, "%s:%d", host.c_str(), port);
+			_name = buffer;
+		}
 	}
 
 	string getPassword()
@@ -107,8 +104,7 @@ public:
 	Jedis *createResource()
 	{
 		Jedis *j = new Jedis;
-		if (!j->init_obj(this))
-		{
+		if (!j->init_obj(this)) {
 			delete j;
 			return NULL;
 		}

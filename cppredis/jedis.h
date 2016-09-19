@@ -30,8 +30,7 @@ struct redisReply;
 class ShardInfo;
 
 // Redis����
-class Jedis : public JedisCommand
-{
+class Jedis: public JedisCommand {
 	typedef vector<string> VecString;
 public:
 	Jedis();
@@ -41,7 +40,10 @@ public:
 	// ��ʼ������
 	bool init_obj(const char *ip, unsigned short port);
 
-    string get_name(){return _name;}
+	string get_name()
+	{
+		return _name;
+	}
 
 	string get_addr();
 
@@ -63,24 +65,24 @@ public:
 	virtual bool execute(bool iswrite, const char *key, long long &result, const char *format, va_list ap);
 	virtual bool execute(bool iswrite, const char *key, string &result, const char *format, va_list ap);
 	virtual bool execute(bool iswrite, const char *key, list<string> &result, const char *format, va_list ap);
-	virtual bool execute(bool iswrite, const char *key, set<string> &result, const char *format,  va_list ap);
+	virtual bool execute(bool iswrite, const char *key, set<string> &result, const char *format, va_list ap);
 
 	virtual bool execute(const char *cmd, long long &result);
 private:
 	// ���ӷ�����
 	redisContext * connect(const char *ip, int port);
 	//���ö�д��ʱʱ��, seconds = 0, useconds = 0, ��ʾ��ֹ��ʱ��
-    void set_timeout(int seconds, int useconds);
+	void set_timeout(int seconds, int useconds);
 
 	// ����������Ϣ���صĽ��, �Ѷ��ĵĹؼ���ֺͽ��ŵ�result��
-    bool parse_subs_reply(void *reply, map<string, string> &result);
+	bool parse_subs_reply(void *reply, map<string, string> &result);
 
 public:
-    string        _name;
-    redisContext  *_redis_context;
-    bool          _is_connect;                 //����״̬��true ��������״̬��false���ڶϿ�״̬
-    int           _reconn_timeval;             //������ʱ����
-    time_t        _last_reconn_time;           //�ϴ�������ʱ��
+	string _name;
+	redisContext *_redis_context;
+	bool _is_connect;                 //����״̬��true ��������״̬��false���ڶϿ�״̬
+	int _reconn_timeval;             //������ʱ����
+	time_t _last_reconn_time;           //�ϴ�������ʱ��
 };
 
 #endif /* REDISPOOL_H_ */

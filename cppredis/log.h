@@ -32,13 +32,11 @@
 #endif
 #endif
 
-enum LOG_MODE
-{
+enum LOG_MODE {
 	LOG_CLOSE, LOG_CONSOLE, LOG_FILE
 };
 
-class CLogger
-{
+class CLogger {
 
 #define LOG_LEVEL(_level)                     \
 {                                             \
@@ -72,20 +70,23 @@ class CLogger
 public:
 	CLogger()
 	{
-        _logtitle = NULL;
-        _log2where = LOG_CONSOLE;
-        _fp = NULL;
-        _log2file = NULL;
-        _loglevel = 1;
-        _back_line_cnt = 20000;
-        _back_size = 50;
-        _endtag = "\n";
-        _back_cnt = 1;
-        _timefmt = "%Y-%m-%d %H:%M:%S";
+		_logtitle = NULL;
+		_log2where = LOG_CONSOLE;
+		_fp = NULL;
+		_log2file = NULL;
+		_loglevel = 1;
+		_back_line_cnt = 20000;
+		_back_size = 50;
+		_endtag = "\n";
+		_back_cnt = 1;
+		_timefmt = "%Y-%m-%d %H:%M:%S";
 	}
 
 	bool init(const char* logtitle, unsigned short log2where, const char* log2file, unsigned short loglevel);
-	void setbacksize(int size) {_back_size = size;} // MB
+	void setbacksize(int size)
+	{
+		_back_size = size;
+	} // MB
 
 public:
 	void log1(const char* format, ...)

@@ -19,8 +19,7 @@
 namespace vos
 {
 
-class Mutex
-{
+class Mutex {
 #if defined(__WINDOWS)
 public:
 	Mutex()
@@ -71,8 +70,7 @@ private:
 #endif
 };
 
-class CRWLock
-{
+class CRWLock {
 #if defined(__WINDOWS)
 public:
 	DWORD m_rdcnt; // number of active readers
@@ -244,8 +242,7 @@ public:
 #endif
 };
 
-class CSemaphore
-{
+class CSemaphore {
 #ifdef __WINDOWS
 private:
 	HANDLE m_semaphore;
@@ -278,33 +275,27 @@ public:
 	{
 		sem_destroy(&m_semaphore);
 	}
-	virtual bool wait (int ms = -1)
+	virtual bool wait(int ms = -1)
 	{
 		int rc = 0;
-		if (ms < 0)
-		{
-			while ((rc = sem_wait (&m_semaphore)) == -1 && errno == EINTR)
+		if (ms < 0) {
+			while ((rc = sem_wait(&m_semaphore)) == -1 && errno == EINTR)
 				continue;
-		}
-		else if (ms == 0)
-		{
-			while ((rc = sem_trywait (&m_semaphore)) == -1 && errno == EINTR)
+		} else if (ms == 0) {
+			while ((rc = sem_trywait(&m_semaphore)) == -1 && errno == EINTR)
 				continue;
-		}
-		else
-		{
+		} else {
 			timespec ts;
 			ts.tv_sec = ms / 1000;
 			ts.tv_nsec = ms % 1000 * 1000000;
-			if (ts.tv_nsec >= 1000000000)
-			{
+			if (ts.tv_nsec >= 1000000000) {
 				ts.tv_nsec = ts.tv_nsec / 1000000000;
 				ts.tv_sec++;
 			}
-			while ((rc = sem_timedwait (&m_semaphore, &ts)) == -1 && errno == EINTR)
+			while ((rc = sem_timedwait(&m_semaphore, &ts)) == -1 && errno == EINTR)
 				continue;
 		}
-        return true;
+		return true;
 	}
 	virtual bool release()
 	{
@@ -317,7 +308,7 @@ public:
 	}
 	virtual bool lock()
 	{
-		return this->wait (-1);
+		return this->wait(-1);
 	}
 	virtual bool unlock()
 	{
@@ -326,11 +317,11 @@ public:
 };
 
 //template <class  T=Mutex>
-class CAutoGuard
-{
+class CAutoGuard {
 public:
 	Mutex& m_lock;
-	CAutoGuard(Mutex& lock) : m_lock(lock)
+	CAutoGuard(Mutex& lock) :
+			m_lock(lock)
 	{
 		m_lock.lock();
 	}
@@ -340,30 +331,29 @@ public:
 	}
 };
 
-class CAutoGuardRD
-{
+class CAutoGuardRD {
 public:
 	CRWLock& m_lock;
 	bool m_locked;
-	CAutoGuardRD(CRWLock& lock) : m_lock(lock), m_locked(0)
+	CAutoGuardRD(CRWLock& lock) :
+			m_lock(lock), m_locked(0)
 	{
 		m_locked = m_lock.lock_read();
 	}
 	~CAutoGuardRD()
 	{
-		if (m_locked)
-		{
+		if (m_locked) {
 			m_lock.unlock_read();
 		}
 	}
 };
 
-class CAutoGuardWR
-{
+class CAutoGuardWR {
 public:
 	CRWLock& m_lock;
 	bool m_locked;
-	CAutoGuardWR(CRWLock& lock) : m_lock(lock), m_locked(0)
+	CAutoGuardWR(CRWLock& lock) :
+			m_lock(lock), m_locked(0)
 	{
 		m_locked = m_lock.lock_write();
 	}

@@ -13,9 +13,8 @@
 
 using namespace std;
 
-class utility
-{
+class utility {
 public:
-    static bool split2vec(const string &str, std::vector<std::string> &vec, const std::string split, const int count);
+	static bool split2vec(const string &str, std::vector<std::string> &vec, const std::string split, const int count);
 };
 #endif /* UTILITY_H_ */

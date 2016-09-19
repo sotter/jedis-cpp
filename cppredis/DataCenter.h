@@ -43,11 +43,9 @@ class DataCenter;
 class RedisDB;
 class RedisTable;
 
-class DataCenter: public vos::RunThread
-{
+class DataCenter: public vos::RunThread {
 public:
-	enum SYN_STATE
-	{
+	enum SYN_STATE {
 		normal/* ��״*/, syning/* ����ͬ�� */, toconvert/* ͬ���Ѿ����׼���л����л���ɺ���toconvert״ */, change = 3
 	};
 
@@ -64,16 +62,22 @@ public:
 
 	bool existdb(const char *dbname);
 
-	SYN_STATE get_state(){return _state;}
-    string get_key(const char *key);
+	SYN_STATE get_state()
+	{
+		return _state;
+	}
+	string get_key(const char *key);
 	Sharded * get_sharded();
 	Sharded * get_shardednew();
-    Jedis & get_cfg_jedis();
+	Jedis & get_cfg_jedis();
 
-    vos::CRWLock &get_wrlock(){return _wrlock;}
+	vos::CRWLock &get_wrlock()
+	{
+		return _wrlock;
+	}
 private:
 	bool init_sharded(Sharded *sharded, const char *address);
-    bool init_sharded_state();
+	bool init_sharded_state();
 	void handle_subs(string &channel, string &value);
 private:
 	vos::ThreadPool _thread_pool;
@@ -83,11 +87,10 @@ private:
 	Sharded *_sharded_new;
 	SYN_STATE _state;
 	Jedis _jedis; //�����÷��������ӵ�jedis����
-    Jedis _subs_jedis;
+	Jedis _subs_jedis;
 };
 
-class RedisDB
-{
+class RedisDB {
 public:
 	RedisDB(string name, DataCenter *d = NULL) :
 			_dbname(name), _data_center(d)
@@ -123,8 +126,7 @@ private:
 	DataCenter *_data_center;
 };
 
-class RedisTable: public JedisCommand
-{
+class RedisTable: public JedisCommand {
 public:
 	RedisTable(string name, RedisDB *db, int timeout = 0) :
 			_tablename(name), _redis_db(db), _timeout(timeout)
@@ -140,7 +142,7 @@ public:
 
 	virtual string getkey(const char * key);
 
-    //���������ĸ��ӿڣ���Ҫ��д���������ļӼ������÷�������ʵ�x
+	//���������ĸ��ӿڣ���Ҫ��д���������ļӼ������÷�������ʵ�x
 	virtual int decrBy(const char * key, int integer);
 
 	virtual int decr(const char * key);
@@ -164,7 +166,7 @@ private:
 	string _tablename;
 	RedisDB *_redis_db;
 	DataCenter *_data_center;
-    int _timeout;
+	int _timeout;
 };
 
 #endif /* DATACENTER_H_ */

@@ -11,8 +11,7 @@
 #endif
 namespace vos
 {
-Event::Event(bool ismanual_reset/* = false*/, bool initial_state /*= false*/,
-		const char* name /*= NULL*/)
+Event::Event(bool ismanual_reset/* = false*/, bool initial_state /*= false*/, const char* name /*= NULL*/)
 {
 	init_event(ismanual_reset, initial_state, name);
 }
@@ -22,13 +21,12 @@ Event::~Event()
 	destroy_event();
 }
 
-void Event::init_event(bool ismanual_reset/* = false*/, bool initial_state/* = false*/,
-		const char* name /*= NULL*/)
+void Event::init_event(bool ismanual_reset/* = false*/, bool initial_state/* = false*/, const char* name /*= NULL*/)
 {
 #ifdef __WINDOWS
 	if ( name != NULL )
 	{
-		char szMaxName[MAX_PATH] = { 0 };
+		char szMaxName[MAX_PATH] = {0};
 		snprintf(szMaxName, MAX_PATH - 1, "event%s", name);
 		szMaxName[MAX_PATH - 1] = 0;
 		hEvent=CreateEvent(NULL,ismanual_reset,initial_state,szMaxName);
@@ -114,8 +112,7 @@ int Event::wait_event(int time_out)
 
 	pthread_mutex_lock(&m_mutex);
 
-	if (_set_event_count == 0)
-	{
+	if (_set_event_count == 0) {
 		struct timespec m_timv;
 
 		m_timv.tv_sec = time(NULL) + time_out / 1000;
@@ -123,20 +120,15 @@ int Event::wait_event(int time_out)
 
 		iRes = pthread_cond_timedwait(&m_cond, &m_mutex, &m_timv);
 
-		if (iRes == 0)
-		{
+		if (iRes == 0) {
 			iRes = EVENT_HAVEEVNET;
 			if (_set_event_count > 0)
 				_set_event_count--;
+		} else {
+			//һ��Ҫ��errno.h�����, ��Ȼ����ΪETIMEDOUT ��pthread.h�еĶ��塣
+			iRes = (iRes == ETIMEDOUT) ? EVNET_TIMEOUT : EVENT_ERROR;
 		}
-		else
-		{
-            //һ��Ҫ��errno.h�����, ��Ȼ����ΪETIMEDOUT ��pthread.h�еĶ��塣
-			iRes = (iRes == ETIMEDOUT) ?  EVNET_TIMEOUT : EVENT_ERROR;
-		}
-	}
-	else
-	{
+	} else {
 		if (_set_event_count > 0)
 			_set_event_count--;
 		iRes = EVENT_HAVEEVNET;
@@ -165,19 +157,15 @@ int Event::wait_event_always()
 	if(_set_event_count<0)_set_event_count=0;
 #else
 	pthread_mutex_lock(&m_mutex);
-	if (_set_event_count == 0)
-	{
+	if (_set_event_count == 0) {
 		iRes = pthread_cond_wait(&m_cond, &m_mutex);
-		if (iRes == 0)
-		{
+		if (iRes == 0) {
 			if (_set_event_count > 0)
 				_set_event_count--;
 			iRes = 1;
-		}
-		else
+		} else
 			iRes = -1;
-	}
-	else if (_set_event_count > 0)
+	} else if (_set_event_count > 0)
 		_set_event_count--;
 	pthread_mutex_unlock(&m_mutex);
 #endif

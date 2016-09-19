@@ -89,52 +89,53 @@
 #define REDIS_READER_MAX_BUF (1024*16)  /* Default max unused reader buffer. */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* This is the reply object returned by redisCommand() */
 typedef struct redisReply {
-    int type; /* REDIS_REPLY_* */
-    long long integer; /* The integer when type is REDIS_REPLY_INTEGER */
-    int len; /* Length of string */
-    char *str; /* Used for both REDIS_REPLY_ERROR and REDIS_REPLY_STRING */
-    size_t elements; /* number of elements, for REDIS_REPLY_ARRAY */
-    struct redisReply **element; /* elements vector for REDIS_REPLY_ARRAY */
+	int type; /* REDIS_REPLY_* */
+	long long integer; /* The integer when type is REDIS_REPLY_INTEGER */
+	int len; /* Length of string */
+	char *str; /* Used for both REDIS_REPLY_ERROR and REDIS_REPLY_STRING */
+	size_t elements; /* number of elements, for REDIS_REPLY_ARRAY */
+	struct redisReply **element; /* elements vector for REDIS_REPLY_ARRAY */
 } redisReply;
 
 typedef struct redisReadTask {
-    int type;
-    int elements; /* number of elements in multibulk container */
-    int idx; /* index in parent (array) object */
-    void *obj; /* holds user-generated value for a read task */
-    struct redisReadTask *parent; /* parent task */
-    void *privdata; /* user-settable arbitrary field */
+	int type;
+	int elements; /* number of elements in multibulk container */
+	int idx; /* index in parent (array) object */
+	void *obj; /* holds user-generated value for a read task */
+	struct redisReadTask *parent; /* parent task */
+	void *privdata; /* user-settable arbitrary field */
 } redisReadTask;
 
 typedef struct redisReplyObjectFunctions {
-    void *(*createString)(const redisReadTask*, char*, size_t);
-    void *(*createArray)(const redisReadTask*, int);
-    void *(*createInteger)(const redisReadTask*, long long);
-    void *(*createNil)(const redisReadTask*);
-    void (*freeObject)(void*);
+	void *(*createString)(const redisReadTask*, char*, size_t);
+	void *(*createArray)(const redisReadTask*, int);
+	void *(*createInteger)(const redisReadTask*, long long);
+	void *(*createNil)(const redisReadTask*);
+	void (*freeObject)(void*);
 } redisReplyObjectFunctions;
 
 /* State for the protocol parser */
 typedef struct redisReader {
-    int err; /* Error flags, 0 when there is no error */
-    char errstr[128]; /* String representation of error when applicable */
+	int err; /* Error flags, 0 when there is no error */
+	char errstr[128]; /* String representation of error when applicable */
 
-    char *buf; /* Read buffer */
-    size_t pos; /* Buffer cursor */
-    size_t len; /* Buffer length */
-    size_t maxbuf; /* Max length of unused buffer */
+	char *buf; /* Read buffer */
+	size_t pos; /* Buffer cursor */
+	size_t len; /* Buffer length */
+	size_t maxbuf; /* Max length of unused buffer */
 
-    redisReadTask rstack[9];
-    int ridx; /* Index of current read task */
-    void *reply; /* Temporary reply pointer */
+	redisReadTask rstack[9];
+	int ridx; /* Index of current read task */
+	void *reply; /* Temporary reply pointer */
 
-    redisReplyObjectFunctions *fn;
-    void *privdata;
+	redisReplyObjectFunctions *fn;
+	void *privdata;
 } redisReader;
 
 /* Public API for the protocol parser. */
@@ -162,12 +163,12 @@ int redisFormatCommandArgv(char **target, int argc, const char **argv, const siz
 
 /* Context for a connection to Redis */
 typedef struct redisContext {
-    int err; /* Error flags, 0 when there is no error */
-    char errstr[128]; /* String representation of error when applicable */
-    int fd;
-    int flags;
-    char *obuf; /* Write buffer */
-    redisReader *reader; /* Protocol reader */
+	int err; /* Error flags, 0 when there is no error */
+	char errstr[128]; /* String representation of error when applicable */
+	int fd;
+	int flags;
+	char *obuf; /* Write buffer */
+	redisReader *reader; /* Protocol reader */
 } redisContext;
 
 redisContext *redisConnect(const char *ip, int port);

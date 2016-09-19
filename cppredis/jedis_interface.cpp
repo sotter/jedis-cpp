@@ -19,7 +19,7 @@ bool JedisCommand::check_error(redisContext *c)
 //		dlog1("error context : %s %s", get_context_addr(c).c_str(), c->errstr);
 //	}
 //	return c == NULL || c->err != 0;
-    return false;
+	return false;
 }
 
 bool JedisCommand::check_error(redisReply *reply)
@@ -27,9 +27,8 @@ bool JedisCommand::check_error(redisReply *reply)
 	if (reply == NULL)
 		return true;
 
-	if (reply->type == REDIS_REPLY_ERROR)
-	{
-        dlog2("%s", showreply(reply).c_str());
+	if (reply->type == REDIS_REPLY_ERROR) {
+		dlog2("%s", showreply(reply).c_str());
 		return true;
 	}
 
@@ -42,35 +41,33 @@ string JedisCommand::showreply(void *reply)
 		return "";
 
 	redisReply *r = (redisReply*) reply;
-    char buffer[128] = {0};
-	switch (r->type)
-	{
+	char buffer[128] = { 0 };
+	switch (r->type) {
 	case REDIS_REPLY_STRING:
 		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_STRING : %s", r->str);
 		break;
 	case REDIS_REPLY_ARRAY:
-        snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_ARRAY ");
-		for (int i = 0; i < (int) r->elements; i++)
-		{
+		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_ARRAY ");
+		for (int i = 0; i < (int) r->elements; i++) {
 			showreply(r->element[i]);
 		}
 		break;
 	case REDIS_REPLY_INTEGER:
-        snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_INTEGER : %lld", r->integer);
+		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_INTEGER : %lld", r->integer);
 		break;
 	case REDIS_REPLY_NIL:
-        snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_NIL");
+		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_NIL");
 		break;
 	case REDIS_REPLY_STATUS:
-        snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_STATUS : %s ", r->str);
+		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_STATUS : %s ", r->str);
 		break;
 	case REDIS_REPLY_ERROR:
-        snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_ERROR : %s ", r->str);
+		snprintf(buffer, sizeof(buffer) - 1, "reply REDIS_REPLY_ERROR : %s ", r->str);
 		break;
 	default:
 		break;
 	}
-    return buffer;
+	return buffer;
 }
 
 string JedisCommand::get_context_addr(redisContext *c)
@@ -78,8 +75,7 @@ string JedisCommand::get_context_addr(redisContext *c)
 	struct sockaddr name;
 	int len = sizeof(name);
 	char buffer[32] = { 0 };
-	if (getpeername(c->fd, &name, (socklen_t*) &len) == 0)
-	{
+	if (getpeername(c->fd, &name, (socklen_t*) &len) == 0) {
 		struct sockaddr_in *addr = (struct sockaddr_in*) &name;
 		unsigned short port = ntohs(addr->sin_port);
 		const char *ip = inet_ntoa(addr->sin_addr);
@@ -90,9 +86,9 @@ string JedisCommand::get_context_addr(redisContext *c)
 
 int JedisCommand::del(const char *key)
 {
-    long long ret;
-    execute(false, getkey(key).c_str(), ret, "DEL %s", getkey(key).c_str());
-    return ret;
+	long long ret;
+	execute(false, getkey(key).c_str(), ret, "DEL %s", getkey(key).c_str());
+	return ret;
 }
 
 bool JedisCommand::setvalue(const char * key, const char * value)
@@ -257,8 +253,7 @@ bool JedisCommand::hmset(const char * key, map<string, string> &hash)
 	cmd += getkey(key);
 
 	map<string, string>::iterator iter = hash.begin();
-	for (; iter != hash.end(); ++iter)
-	{
+	for (; iter != hash.end(); ++iter) {
 		cmd += " " + iter->first + " " + iter->second;
 	}
 
@@ -270,12 +265,11 @@ list<string> JedisCommand::hmget(const char * key, list<string> &fields)
 	string cmd = "HMGET ";
 	cmd += getkey(key);
 	list<string>::iterator iter = fields.begin();
-	for (; iter != fields.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	cmd += " ''";
-        else
-        	cmd += " " + *iter;
+	for (; iter != fields.end(); ++iter) {
+		if (iter->length() == 0)
+			cmd += " ''";
+		else
+			cmd += " " + *iter;
 	}
 
 	list<string> l;
@@ -307,12 +301,11 @@ int JedisCommand::hdel(const char * key, list<string> &field)
 	cmd += getkey(key);
 
 	list<string>::iterator iter = field.begin();
-	for (; iter != field.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	cmd += " ''";
-        else
-        	cmd += " " + *iter;
+	for (; iter != field.end(); ++iter) {
+		if (iter->length() == 0)
+			cmd += " ''";
+		else
+			cmd += " " + *iter;
 	}
 
 	execute(false, getkey(key).c_str(), ret, cmd.c_str());
@@ -346,19 +339,17 @@ map<string, string> JedisCommand::hgetAll(const char * key)
 	map<string, string> ret;
 
 	list<string> l;
-	if (execute(false, getkey(key).c_str(), l, "HGETALL %s", getkey(key).c_str()))
-	{
-        list<string>::iterator iter = l.begin();
-        while(iter != l.end())
-        {
-        	string first = *iter;
-        	string second = *(++iter);
-        	ret.insert(make_pair(first, second));
-            if(iter != l.end())
-                ++iter;
-            else
-            	break;
-        }
+	if (execute(false, getkey(key).c_str(), l, "HGETALL %s", getkey(key).c_str())) {
+		list<string>::iterator iter = l.begin();
+		while (iter != l.end()) {
+			string first = *iter;
+			string second = *(++iter);
+			ret.insert(make_pair(first, second));
+			if (iter != l.end())
+				++iter;
+			else
+				break;
+		}
 	}
 	return ret;
 }
@@ -371,12 +362,11 @@ int JedisCommand::rpush(const char * key, list<string> &s)
 	cmd += getkey(key);
 
 	list<string>::iterator iter = s.begin();
-	for (; iter != s.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	cmd += " ''";
-        else
-        	cmd += " " + *iter;
+	for (; iter != s.end(); ++iter) {
+		if (iter->length() == 0)
+			cmd += " ''";
+		else
+			cmd += " " + *iter;
 	}
 
 	execute(true, getkey(key).c_str(), ret, cmd.c_str());
@@ -392,12 +382,11 @@ int JedisCommand::lpush(const char * key, list<string> &strings)
 	cmd += getkey(key);
 
 	list<string>::iterator iter = strings.begin();
-	for (; iter != strings.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	cmd += " ''";
-        else
-		    cmd += " " + *iter;
+	for (; iter != strings.end(); ++iter) {
+		if (iter->length() == 0)
+			cmd += " ''";
+		else
+			cmd += " " + *iter;
 	}
 
 	execute(true, getkey(key).c_str(), ret, cmd.c_str());
@@ -467,12 +456,11 @@ int JedisCommand::sadd(const char * key, list<string> &member)
 //    string m ;
 	m += getkey(key);
 	list<string>::iterator iter = member.begin();
-	for (; iter != member.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	m += " ''";
-        else
-		    m += " " + *iter;
+	for (; iter != member.end(); ++iter) {
+		if (iter->length() == 0)
+			m += " ''";
+		else
+			m += " " + *iter;
 	}
 
 	execute(true, getkey(key).c_str(), ret, m.c_str());
@@ -492,12 +480,11 @@ int JedisCommand::srem(const char * key, list<string> &member)
 	string m = "SREM ";
 	m += getkey(key);
 	list<string>::iterator iter = member.begin();
-	for (; iter != member.end(); ++iter)
-	{
-        if(iter->length() == 0)
-        	m += " ''";
-        else
-		    m += " " + *iter;
+	for (; iter != member.end(); ++iter) {
+		if (iter->length() == 0)
+			m += " ''";
+		else
+			m += " " + *iter;
 	}
 	execute(false, getkey(key).c_str(), ret, m.c_str());
 
@@ -520,7 +507,7 @@ int JedisCommand::scard(const char * key)
 
 bool JedisCommand::sismember(const char * key, const char * member)
 {
-    long long ret = 0;
+	long long ret = 0;
 	execute(false, getkey(key).c_str(), ret, "SISMEMBER %s %s", getkey(key).c_str(), member);
 	return ret == 1;
 }
@@ -535,7 +522,7 @@ string JedisCommand::srandmember(const char * key)
 int JedisCommand::zadd(const char * key, double score, const char * member)
 {
 	long long ret = -1;
-	if (member==NULL || strlen(member)==0)
+	if (member == NULL || strlen(member) == 0)
 		execute(true, getkey(key).c_str(), ret, "zadd %s %f ''", getkey(key).c_str(), score, member);
 	else
 		execute(true, getkey(key).c_str(), ret, "zadd %s %f %s", getkey(key).c_str(), score, member);
@@ -550,18 +537,14 @@ int JedisCommand::zadd(const char * key, map<string, double> scoreMembers)
 	string m = "zadd ";
 	m += getkey(key);
 	map<string, double>::iterator iter = scoreMembers.begin();
-	for (; iter != scoreMembers.end(); ++iter)
-	{
+	for (; iter != scoreMembers.end(); ++iter) {
 		char buffer[256] = { 0 };
-        	snprintf(buffer, sizeof(buffer) - 1, " %f ", iter->second);
-		m+=buffer;
-		if (iter->first.length() == 0)
-		{
-			m+=string("''");
-		}
-		else
-		{
-			m+=iter->first;
+		snprintf(buffer, sizeof(buffer) - 1, " %f ", iter->second);
+		m += buffer;
+		if (iter->first.length() == 0) {
+			m += string("''");
+		} else {
+			m += iter->first;
 		}
 	}
 	//=============================================
@@ -583,8 +566,7 @@ int JedisCommand::zrem(const char * key, list<string> &member)
 	string m = "ZREM ";
 	m += getkey(key);
 	list<string>::iterator iter = member.begin();
-	for (; iter != member.end(); ++iter)
-	{
+	for (; iter != member.end(); ++iter) {
 		m += " " + *iter;
 	}
 
@@ -635,12 +617,9 @@ double JedisCommand::zscore(const char * key, const char * member)
 	string ret;
 	execute(false, getkey(key).c_str(), ret, "ZSCORE %s %s", getkey(key).c_str(), member);
 
-	if (!ret.empty())
-	{
+	if (!ret.empty()) {
 		return strtof(ret.c_str(), NULL);
-	}
-	else
-	{
+	} else {
 		return -1;
 	}
 }
@@ -690,8 +669,8 @@ set<string> JedisCommand::zrevrangeByScore(const char * key, double max, double 
 set<string> JedisCommand::zrangeByScore(const char * key, double min, double max, int offset, int count)
 {
 	set<string> ret;
-	execute(false, getkey(key).c_str(), ret, "ZRANGEBYSCORE %s %f %f LIMIT %d %d", getkey(key).c_str(), min, max, offset,
-			count);
+	execute(false, getkey(key).c_str(), ret, "ZRANGEBYSCORE %s %f %f LIMIT %d %d", getkey(key).c_str(), min, max,
+			offset, count);
 	return ret;
 }
 
@@ -705,24 +684,24 @@ set<string> JedisCommand::zrevrangeByScore(const char * key, const char * max, c
 set<string> JedisCommand::zrangeByScore(const char * key, const char * min, const char * max, int offset, int count)
 {
 	set<string> ret;
-	execute(false, getkey(key).c_str(), ret, "ZRANGEBYSCORE %s %s %s LIMIT %d %d", getkey(key).c_str(), min, max, offset,
-			count);
+	execute(false, getkey(key).c_str(), ret, "ZRANGEBYSCORE %s %s %s LIMIT %d %d", getkey(key).c_str(), min, max,
+			offset, count);
 	return ret;
 }
 
 set<string> JedisCommand::zrevrangeByScore(const char * key, double max, double min, int offset, int count)
 {
 	set<string> ret;
-	execute(false, getkey(key).c_str(), ret, "ZREVRANGEBYSCORE %s %f %f LIMIT %d %d", getkey(key).c_str(), max, min, offset,
-			count);
+	execute(false, getkey(key).c_str(), ret, "ZREVRANGEBYSCORE %s %f %f LIMIT %d %d", getkey(key).c_str(), max, min,
+			offset, count);
 	return ret;
 }
 
 set<string> JedisCommand::zrevrangeByScore(const char * key, const char * max, const char * min, int offset, int count)
 {
 	set<string> ret;
-	execute(false, getkey(key).c_str(), ret, "ZREVRANGEBYSCORE %s %s %s LIMIT %d %d", getkey(key).c_str(), max, min, offset,
-			count);
+	execute(false, getkey(key).c_str(), ret, "ZREVRANGEBYSCORE %s %s %s LIMIT %d %d", getkey(key).c_str(), max, min,
+			offset, count);
 	return ret;
 }
 

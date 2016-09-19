@@ -20,8 +20,8 @@ Sharded::Sharded()
 
 Sharded::~Sharded()
 {
-    dlog1("call Sharded::~Sharded()");
-    destroy();
+	dlog1("call Sharded::~Sharded()");
+	destroy();
 }
 
 bool Sharded::init(vector<ShardInfo*> &shard_infos)
@@ -29,29 +29,22 @@ bool Sharded::init(vector<ShardInfo*> &shard_infos)
 	char key[128] = { 0 };
 
 	Jedis *j = NULL;
-	for (int  i = 0; i < (int)shard_infos.size(); i++)
-	{
+	for (int i = 0; i < (int) shard_infos.size(); i++) {
 		/* ������shard_infos�е���Ϣ���ܴ���һ����Ч��Redis���ӣ���ô��������һ�� */
-		if ((j = shard_infos[i]->createResource()) == NULL)
-		{
-            delete shard_infos[i];
-            shard_infos[i] = NULL;
+		if ((j = shard_infos[i]->createResource()) == NULL) {
+			delete shard_infos[i];
+			shard_infos[i] = NULL;
 			continue;
 		}
 
-		if (shard_infos[i]->getName().empty())
-		{
-			for (int n = 0; n < 160 * shard_infos[i]->getWeight(); n++)
-			{
+		if (shard_infos[i]->getName().empty()) {
+			for (int n = 0; n < 160 * shard_infos[i]->getWeight(); n++) {
 				memset(key, 0, sizeof(key));
 				snprintf(key, sizeof(key) - 1, "SHARD-%d-NODE-%d", i, n);
 				_nodes.insert(make_pair(Hash::hash(key, strlen(key)), shard_infos[i]));
 			}
-		}
-		else
-		{
-			for (int n = 0; n < 160 * shard_infos[i]->getWeight(); n++)
-			{
+		} else {
+			for (int n = 0; n < 160 * shard_infos[i]->getWeight(); n++) {
 				memset(key, 0, sizeof(key));
 				snprintf(key, sizeof(key) - 1, "%s*%d%d", shard_infos[i]->getName().c_str(),
 						shard_infos[i]->getWeight(), n);
@@ -68,8 +61,7 @@ bool Sharded::init(vector<ShardInfo*> &shard_infos)
 void Sharded::destroy()
 {
 	map<ShardInfo *, Jedis*>::iterator iter = _resources.begin();
-	for (; iter != _resources.end(); ++iter)
-	{
+	for (; iter != _resources.end(); ++iter) {
 		delete iter->first;
 		delete iter->second;
 	}
@@ -96,19 +88,13 @@ ShardInfo *Sharded::getShardInfo(const char *key)
 
 	map<long long, ShardInfo*>::iterator iter = _nodes.find(hash_key);
 
-	if (iter != _nodes.end())
-	{
+	if (iter != _nodes.end()) {
 		return iter->second;
-	}
-	else
-	{
+	} else {
 		iter = _nodes.upper_bound(hash_key);
-		if (iter != _nodes.end())
-		{
+		if (iter != _nodes.end()) {
 			return iter->second;
-		}
-		else
-		{
+		} else {
 			return _nodes.begin()->second;
 		}
 	}

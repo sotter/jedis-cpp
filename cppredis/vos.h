@@ -1,8 +1,8 @@
 /******************************************************
-*   FileName: vos.h
-*     Author: liubo  2012-7-2 
-*Description:
-*******************************************************/
+ *   FileName: vos.h
+ *     Author: liubo  2012-7-2 
+ *Description:
+ *******************************************************/
 
 #ifndef VOS_H_
 #define VOS_H_
@@ -17,20 +17,18 @@
 //# define strcasecmp	  _stricmp
 //# define strncasecmp	_strnicmp
 
-
-typedef int  socklen_t;
+typedef int socklen_t;
 
 #endif
 
 typedef signed char int8;
-typedef unsigned char   uint8;
-typedef short  int16;
-typedef unsigned short  uint16;
-typedef int  int32;
-typedef unsigned   uint32;
-typedef long long  int64;
-typedef unsigned long long   uint64;
-
+typedef unsigned char uint8;
+typedef short int16;
+typedef unsigned short uint16;
+typedef int int32;
+typedef unsigned uint32;
+typedef long long int64;
+typedef unsigned long long uint64;
 
 /* INT ���ͱ�ʾ�����룬���������������Ѿ��㹻�ˡ� */
 #define OK          			    0
@@ -100,7 +98,6 @@ typedef unsigned long long   uint64;
 #define NI_THREAD_PRIORITY_BELOW_NORMA		THREAD_PRIORITY_BELOW_NORMAL
 //��һ���2���ȼ�
 #define NI_THREAD_PRIORITY_LOWEST			THREAD_PRIORITY_LOWEST
-
 
 #define IO_READ_EVENT    		1
 #define IO_WRITE_EVENT   		2

@@ -13,8 +13,7 @@
 class Jedis;
 class ShardInfo;
 
-class Sharded
-{
+class Sharded {
 public:
 	Sharded();
 	virtual ~Sharded();
@@ -23,9 +22,12 @@ public:
 
 	Jedis *getShard(const char *key);
 
-	bool empty(){return _nodes.empty();}
+	bool empty()
+	{
+		return _nodes.empty();
+	}
 
-    void destroy();
+	void destroy();
 
 private:
 	ShardInfo *getShardInfo(const char *key);

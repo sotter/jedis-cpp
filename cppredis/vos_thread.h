@@ -35,68 +35,82 @@ extern int wait_thread(THREAD_T tid);
 
 class ThreadManage;
 class Thread;
-class RunThread
-{
+class RunThread {
 public:
-    virtual ~RunThread(){};
-    virtual int run_thread(int type) = 0;
+	virtual ~RunThread()
+	{
+	}
+	;
+	virtual int run_thread(int type) = 0;
 };
 
-class Thread
-{
+class Thread {
 public:
-	enum State{init, running, exited, stopped};
+	enum State {
+		init, running, exited, stopped
+	};
 
-    Thread(): _id(0), _tid(0), _state(init), _exit(false){}
-    ~Thread(){};
+	Thread() :
+			_id(0), _tid(0), _state(init), _exit(false)
+	{
+	}
+	~Thread()
+	{
+	}
+	;
 
 	int start();
 
 	/*********************************
 	 * �ڹ涨��ʱ���ڣ��߳����û��ִ���꣬ǿ�н����̡߳�
 	 * ******************************/
-    int stop(int timeout);
+	int stop(int timeout);
 
-    //�ṩ��Ӧ�ò��ʹ�����õ�
-    int isexit(){return _exit;}
+	//�ṩ��Ӧ�ò��ʹ�����õ�
+	int isexit()
+	{
+		return _exit;
+	}
 
 private:
 	void run()
 	{
 		_run_thread->run_thread(_type);
 	}
-    int exit();
-    void set_exit(){_exit = true;}
+	int exit();
+	void set_exit()
+	{
+		_exit = true;
+	}
 #ifdef __WINDOWS
 	static unsigned int WINAPI the_thread(void *param);
-	
+
 #else
 	static void* the_thread(void *param);
 #endif
 
 public:
-    vos::Event _stop_event;
-    int _type;
-    int _id;            //���б�ʶ��
+	vos::Event _stop_event;
+	int _type;
+	int _id;            //���б�ʶ��
 	THREAD_T _tid;
 	State _state;
 	RunThread *_run_thread;
 	bool _exit;
 };
 
-class ThreadPool
-{
+class ThreadPool {
 #define max_thread_num 64
 public:
-    /***
-     * ע���̣߳�type_index��ʶ�̵߳����ͣ� �������͵��߳�ע����ٸ���
-     */
-	int regist(int type_index, RunThread *run,  int num = 1);
-    int start();
-    /*************
-     * �ڷ��ͽ����ź�timeout��ʱ����,�̻߳�û�н����ǿ��ɱ��.
-     **********************/
-    int stop(int timeout = 0);
+	/***
+	 * ע���̣߳�type_index��ʶ�̵߳����ͣ� �������͵��߳�ע����ٸ���
+	 */
+	int regist(int type_index, RunThread *run, int num = 1);
+	int start();
+	/*************
+	 * �ڷ��ͽ����ź�timeout��ʱ����,�̻߳�û�н����ǿ��ɱ��.
+	 **********************/
+	int stop(int timeout = 0);
 private:
 
 	std::vector<Thread*> _vec_thread;

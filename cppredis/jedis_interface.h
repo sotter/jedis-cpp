@@ -1,8 +1,8 @@
 /******************************************************
-*   FileName: jedis_interface.h
-*     Author: liubo  2012-12-12 
-*Description:
-*******************************************************/
+ *   FileName: jedis_interface.h
+ *     Author: liubo  2012-12-12 
+ *Description:
+ *******************************************************/
 
 #ifndef JEDIS_INTERFACE_H_
 #define JEDIS_INTERFACE_H_
@@ -17,22 +17,25 @@ using namespace std;
 
 struct redisContext;
 struct redisReply;
-class JedisCommand
-{
+class JedisCommand {
 public:
-	JedisCommand(){}
-	virtual ~JedisCommand(){}
+	JedisCommand()
+	{
+	}
+	virtual ~JedisCommand()
+	{
+	}
 	//replyΪ�յ������Ϊ�Ǵ���ģ���ʱ��һ��c��Ҳ���д�����
-    bool check_error(redisContext *c);
-    bool check_error(redisReply *reply);
+	bool check_error(redisContext *c);
+	bool check_error(redisReply *reply);
 
 	virtual string getkey(const char * key) = 0;
 	// ������ʹ�ã����reply��ֵ
 	string showreply(void *reply);
 
-    string get_context_addr(redisContext *c);
+	string get_context_addr(redisContext *c);
 
-    virtual int del(const char *key);
+	virtual int del(const char *key);
 
 	virtual bool setvalue(const char * key, const char * value);
 
@@ -184,7 +187,6 @@ public:
 
 	virtual int rpushx(const char * key, const char * value);
 
-
 	virtual bool execute(bool iswrite, const char *key, const char *format, ...)
 	{
 		return false;
@@ -206,8 +208,6 @@ public:
 		return false;
 	}
 
-
 };
-
 
 #endif /* JEDIS_INTERFACE_H_ */

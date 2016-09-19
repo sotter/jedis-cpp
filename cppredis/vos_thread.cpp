@@ -44,24 +44,24 @@ int wait_thread(THREAD_T tid)
 /* static */
 int stop_thread(THREAD_T tid)
 {
-    return 0;
+	return 0;
 }
 
 #ifdef __WINDOWS
-unsigned int  WINAPI Thread::the_thread(void *param)
+unsigned int WINAPI Thread::the_thread(void *param)
 {
 #else
-void*  Thread::the_thread(void *param)
+void* Thread::the_thread(void *param)
 {
 	pthread_detach(pthread_self());
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
-	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
 #endif
-    Thread *thread = (Thread*)param;
-    thread->_state = running;
-    thread->run();
-    thread->_state = stopped;
-    thread->_stop_event.set_event();
+	Thread *thread = (Thread*) param;
+	thread->_state = running;
+	thread->run();
+	thread->_state = stopped;
+	thread->_stop_event.set_event();
 #ifdef __WINDOWS
 	return 0;
 #else
@@ -71,20 +71,19 @@ void*  Thread::the_thread(void *param)
 
 int Thread::start()
 {
-    _tid = make_thread((void*)(the_thread), (void*)this);
+	_tid = make_thread((void*) (the_thread), (void*) this);
 	return 0;
 }
 
 int Thread::stop(int timeout)
 {
 	set_exit();
-    int ret;
-	if(EVNET_TIMEOUT == (ret =  _stop_event.wait_event(timeout)))
-	{
+	int ret;
+	if (EVNET_TIMEOUT == (ret = _stop_event.wait_event(timeout))) {
 		this->exit();
 	}
 //	printf("call this->exit() \n");
-    return 0;
+	return 0;
 }
 
 int Thread::exit()
@@ -95,42 +94,39 @@ int Thread::exit()
 //	_endthreadex(_tid);
 #endif
 	_tid = 0;
-    _exit = true;
-    _state = exited;
+	_exit = true;
+	_state = exited;
 	return 0;
 }
 
 int ThreadPool::regist(int type_index, RunThread *run, int num)
 {
-	for(int i = 0; i < num; i++)
-	{
-        Thread *thread = new Thread;
-        thread->_type = type_index;
-        thread->_run_thread = run;
-        _vec_thread.push_back(thread);
+	for (int i = 0; i < num; i++) {
+		Thread *thread = new Thread;
+		thread->_type = type_index;
+		thread->_run_thread = run;
+		_vec_thread.push_back(thread);
 	}
 	return 0;
 }
 
 int ThreadPool::start()
 {
-    for(size_t i = 0; i < _vec_thread.size(); i++)
-    {
-    	_vec_thread[i]->start();
-    }
+	for (size_t i = 0; i < _vec_thread.size(); i++) {
+		_vec_thread[i]->start();
+	}
 
-    return 0;
+	return 0;
 }
 /*************
  * �ڷ��ͽ����ź�timeout��ʱ����,�̻߳�û�н����ǿ��ɱ��.
  **********************/
 int ThreadPool::stop(int timeout)
 {
-    for(size_t i = 0; i < _vec_thread.size(); i++)
-    {
-    	_vec_thread[i]->stop(timeout);
-    }
-    return 0;
+	for (size_t i = 0; i < _vec_thread.size(); i++) {
+		_vec_thread[i]->stop(timeout);
+	}
+	return 0;
 }
 
 }
