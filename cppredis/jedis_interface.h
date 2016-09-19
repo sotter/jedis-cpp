@@ -1,5 +1,4 @@
 /******************************************************
-*  CopyRight: 北京中交兴路科技有限公司(2012-2015)
 *   FileName: jedis_interface.h
 *     Author: liubo  2012-12-12 
 *Description:
@@ -23,12 +22,12 @@ class JedisCommand
 public:
 	JedisCommand(){}
 	virtual ~JedisCommand(){}
-	//reply为空的情况认为是错误的，这时候一般c中也会有错误发生
+	//reply为锟秸碉拷锟斤拷锟斤拷锟轿拷谴锟斤拷锟侥ｏ拷锟斤拷时锟斤拷一锟斤拷c锟斤拷也锟斤拷锟叫达拷锟斤拷锟斤拷
     bool check_error(redisContext *c);
     bool check_error(redisReply *reply);
 
 	virtual string getkey(const char * key) = 0;
-	// 做测试使用，获得reply的值
+	// 锟斤拷锟斤拷锟斤拷使锟矫ｏ拷锟斤拷锟絩eply锟斤拷值
 	string showreply(void *reply);
 
     string get_context_addr(redisContext *c);

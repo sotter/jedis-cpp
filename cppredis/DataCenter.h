@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: 北京中交兴路科技有限公司(2012-2015)
  *   FileName: DataCenter.h
  *     Author: liubo  2012-12-21 
  *Description:
@@ -49,7 +48,7 @@ class DataCenter: public vos::RunThread
 public:
 	enum SYN_STATE
 	{
-		normal/* 正常状*/, syning/* 正在同步 */, toconvert/* 同步已经完成准夓切换，切换完成后变成toconvert状 */, change = 3
+		normal/* 锟斤拷状*/, syning/* 锟斤拷锟斤拷同锟斤拷 */, toconvert/* 同锟斤拷锟窖撅拷锟斤拷锟阶硷拷锟斤拷谢锟斤拷锟斤拷谢锟斤拷锟缴猴拷锟斤拷toconvert状 */, change = 3
 	};
 
 	DataCenter();
@@ -80,10 +79,10 @@ private:
 	vos::ThreadPool _thread_pool;
 	vos::CRWLock _wrlock;
 	Sharded *_sharded;
-	//同步的时候使用的?
+	//同锟斤拷锟斤拷时锟斤拷使锟矫碉拷?
 	Sharded *_sharded_new;
 	SYN_STATE _state;
-	Jedis _jedis; //与配置服务器连接的jedis对象
+	Jedis _jedis; //锟斤拷锟斤拷锟矫凤拷锟斤拷锟斤拷锟斤拷锟接碉拷jedis锟斤拷锟斤拷
     Jedis _subs_jedis;
 };
 
@@ -141,7 +140,7 @@ public:
 
 	virtual string getkey(const char * key);
 
-    //对于下面四个接口，需要重写，计数器的加减在配置服务器上实玿
+    //锟斤拷锟斤拷锟斤拷锟斤拷锟侥革拷锟接口ｏ拷锟斤拷要锟斤拷写锟斤拷锟斤拷锟斤拷锟斤拷锟侥加硷拷锟斤拷锟斤拷锟矫凤拷锟斤拷锟斤拷锟斤拷实锟絰
 	virtual int decrBy(const char * key, int integer);
 
 	virtual int decr(const char * key);

@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: ±±¾©ÖĞ½»ĞËÂ·¿Æ¼¼ÓĞÏŞ¹«Ë¾(2012-2015)
  *   FileName: jedis_interface.cpp
  *     Author: liubo  2012-12-24
  *Description:
@@ -36,7 +35,7 @@ bool JedisCommand::check_error(redisReply *reply)
 
 	return false;
 }
-//µİ¹éµ÷ÓÃÏÔÊ¾ReplyµÄ½á¹û, ²âÊÔÊ¹ÓÃµÄ
+//ï¿½İ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Replyï¿½Ä½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½
 string JedisCommand::showreply(void *reply)
 {
 	if (reply == NULL)
@@ -225,7 +224,7 @@ int JedisCommand::append(const char * key, const char * value)
 
 string JedisCommand::substr(const char * key, int start, int end)
 {
-	//todo: ºóĞøÑĞ¾¿  2012-12-13
+	//todo: ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¾ï¿½  2012-12-13
 	string ret;
 	execute(false, getkey(key).c_str(), ret, "SUBSTR %s %d %d", getkey(key).c_str(), start, end);
 	return ret;
@@ -421,7 +420,7 @@ list<string> JedisCommand::lrange(const char * key, int start, int end)
 	return ret;
 }
 
-//status const char *ÀàĞÍ£¬¸ÄÎªboolÀàĞÍ
+//status const char *ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½Îªboolï¿½ï¿½ï¿½ï¿½
 bool JedisCommand::ltrim(const char * key, int start, int end)
 {
 	return execute(false, getkey(key).c_str(), "LTRIM %s %d %d", getkey(key).c_str(), start, end);
@@ -434,7 +433,7 @@ string JedisCommand::lindex(const char * key, int index)
 	return ret;
 }
 
-//status const char *ÀàĞÍ£¬¸ÄÎªboolÀàĞÍ
+//status const char *ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½Îªboolï¿½ï¿½ï¿½ï¿½
 bool JedisCommand::lset(const char * key, int index, const char * value)
 {
 	return execute(true, getkey(key).c_str(), "LSET %s %d %s", getkey(key).c_str(), index, value);
@@ -593,7 +592,7 @@ int JedisCommand::zrem(const char * key, list<string> &member)
 	return ret;
 }
 
-//todo: Ğè²âÊÔÑéÖ¤
+//todo: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 double JedisCommand::zincrby(const char * key, double score, const char * member)
 {
 	string ret;
@@ -629,7 +628,7 @@ int JedisCommand::zcard(const char * key)
 	return ret;
 }
 
-//todo: Ğè²âÊÔÑéÖ¤
+//todo: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 double JedisCommand::zscore(const char * key, const char * member)
 {
 //	long long ret = -1;
@@ -786,7 +785,7 @@ int JedisCommand::rpushx(const char * key, const char * value)
 //	return ret;
 //}
 //
-////ÏÂÃæ¼¸¸öexecuteÓÉÓÚÖØÔØµÄÔ­Òò£¬´úÂë¶¼Ò»Ñù£¬ÄÜ·ñÍ¨¹ıÄ£°åµÄ·½Ê½ÊµÏÖ£¿
+////ï¿½ï¿½ï¿½æ¼¸ï¿½ï¿½executeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½Ô­ï¿½ò£¬´ï¿½ï¿½ë¶¼Ò»ï¿½ï¿½ï¿½Ü·ï¿½Í¨ï¿½ï¿½Ä£ï¿½ï¿½Ä·ï¿½Ê½Êµï¿½Ö£ï¿½
 //bool JedisCommand::execute(bool iswrite, const char *key, string &result, const char *format, ...)
 //{
 //	va_list ap;

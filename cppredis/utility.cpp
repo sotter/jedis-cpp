@@ -1,12 +1,11 @@
 /******************************************************
-*  CopyRight: ±±¾©ÖÐ½»ÐËÂ·¿Æ¼¼ÓÐÏÞ¹«Ë¾(2012-2015)
 *   FileName: utility.cpp
 *     Author: liubo  2012-12-21 
 *Description:
 *******************************************************/
 #include "utility.h"
 
-// ×Ô¶¯²ð·ÖÇ°¶à¸ö·Ö¸î·û´¦Àí
+// ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½
 bool utility::split2vec( const string &str, std::vector<std::string> &vec, const std::string split , const int count )
 {
 	if ( str.empty() )

@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: 北京中交兴路科技有限公司(2012-2015)
  *   FileName: sharded.cpp
  *     Author: liubo  2012-12-5 
  *Description:
@@ -32,7 +31,7 @@ bool Sharded::init(vector<ShardInfo*> &shard_infos)
 	Jedis *j = NULL;
 	for (int  i = 0; i < (int)shard_infos.size(); i++)
 	{
-		/* 如果这个shard_infos中的信息不能创建一个有效的Redis连接，那么继续尝试下一个 */
+		/* 锟斤拷锟斤拷锟斤拷shard_infos锟叫碉拷锟斤拷息锟斤拷锟杰达拷锟斤拷一锟斤拷锟斤拷效锟斤拷Redis锟斤拷锟接ｏ拷锟斤拷么锟斤拷锟斤拷锟斤拷锟斤拷一锟斤拷 */
 		if ((j = shard_infos[i]->createResource()) == NULL)
 		{
             delete shard_infos[i];

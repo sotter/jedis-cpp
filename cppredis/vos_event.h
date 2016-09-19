@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: 北京中交兴路科技有限公司(2012-2015)
  *   FileName: vos_event.h
  *     Author: liubo  2012-7-6 
  *Description:
@@ -42,7 +41,7 @@ public:
 public:
 	void set_event();
 	void pulse_event();
-	//单位是毫秒
+	//锟斤拷位锟角猴拷锟斤拷
 	int  wait_event(int dwTimeOut);
 	int  wait_event_always();
 	bool is_wait_event();

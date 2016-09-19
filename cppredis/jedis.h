@@ -1,12 +1,11 @@
 /******************************************************
- *  CopyRight: ±±¾©ÖÐ½»ÐËÂ·¿Æ¼¼ÓÐÏÞ¹«Ë¾(2012-2015)
  *   FileName: main.cpp
  *     Author: liubo  2012-11-26
- *Description: ÔõÃ´ÑùÉè¶¨JEDISµÄÖØÁ¬²ßÂÔ£º
- *Description: (1) Ö´ÐÐÃüÁîÖÐÈç¹û¼ì²âµ½ÊÇÍøÂç´íÎó£¬Á¢¼´ÖØÁ¬£¬Èç¹ûÖØÁ¬Ê§°Ü·ÅÆúÕâ´ÎÖØÁ¬¡£ÏÂÒ»´ÎÃüÁîµ½À´£¬Èç¹ûÏà¸ôµÄÊ±¼ä´óÓÚ×îÐ¡ÖØÁ¬Ê±¼ä£¬±ã×Ô¶¯ÖØÁ¬¡£
- *Description: ÖØÁ¬µÄÇý¶¯ÊÇÀ´×ÔÃüÁîÖ´ÐÐµÄÏß³Ì£¬²»ÄÜ×Ô¼º¿ª±ÙÒ»¸öÏß³Ì£¬ÕâÑù¾ÍÉæ¼°µ½Í¬²½µÄÎÊÌâ¡£
- *Description: (2) 2012-12-14: Ö÷´ÓÁ´Â··ÅÔÚÍ¬Ò»¶ÔÏóÖÐ£¬ºóÃæµÄÍ¬²½£¬ÖØÁ¬£¬´íÎóÅÐ¶ÏµÈÏàµ±¸´ÔÓ¡£ÐÞ¸ÄÎªÒ»¸ö¶ÔÏóÖÐ¾ÍÖ»°üº¬Ò»¸öÁ´Â·£¬ÉÏ²ãÔÙ·â×°Ò»¸ö
- *Description: °üº¬Á½¸ö¶ÔÏóµÄÁ´Â·¶ÔÏó, Õâ¸ö¶ÔÏóÓëShardInfo´¦ÓÚÒ»¸ö²ã´ÎÉÏ¡£
+ *Description: ï¿½ï¿½Ã´ï¿½ï¿½ï¿½è¶¨JEDISï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½
+ *Description: (1) Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½îµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¬ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ *Description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ðµï¿½ï¿½ß³Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ß³Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¼°ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â¡£
+ *Description: (2) 2012-12-14: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïµï¿½ï¿½àµ±ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½Þ¸ï¿½ÎªÒ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½Ö»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ï²ï¿½ï¿½Ù·ï¿½×°Ò»ï¿½ï¿½
+ *Description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ShardInfoï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½
  *******************************************************/
 
 #ifndef __JEDIS_H__
@@ -23,14 +22,14 @@
 
 using namespace std;
 
-// ÕâÀï¶¨Òå¶ÔÏó´æ»îÊ±¼äÎª60Ãë
+// ï¿½ï¿½ï¿½ï¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îª60ï¿½ï¿½
 #define OBJ_LIVE_TIME  120
 
 struct redisContext;
 struct redisReply;
 class ShardInfo;
 
-// Redis¶ÔÏó
+// Redisï¿½ï¿½ï¿½ï¿½
 class Jedis : public JedisCommand
 {
 	typedef vector<string> VecString;
@@ -39,7 +38,7 @@ public:
 	virtual ~Jedis();
 
 	bool init_obj(ShardInfo * shard_info);
-	// ³õÊ¼»¯¶ÔÏó
+	// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool init_obj(const char *ip, unsigned short port);
 
     string get_name(){return _name;}
@@ -68,20 +67,20 @@ public:
 
 	virtual bool execute(const char *cmd, long long &result);
 private:
-	// Á¬½Ó·þÎñÆ÷
+	// ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½
 	redisContext * connect(const char *ip, int port);
-	//ÉèÖÃ¶ÁÐ´³¬Ê±Ê±¼ä, seconds = 0, useconds = 0, ±íÊ¾½ûÖ¹³¬Ê±¡£
+	//ï¿½ï¿½ï¿½Ã¶ï¿½Ð´ï¿½ï¿½Ê±Ê±ï¿½ï¿½, seconds = 0, useconds = 0, ï¿½ï¿½Ê¾ï¿½ï¿½Ö¹ï¿½ï¿½Ê±ï¿½ï¿½
     void set_timeout(int seconds, int useconds);
 
-	// ½âÎö¶©ÔÄÐÅÏ¢·µ»ØµÄ½á¹û, °Ñ¶©ÔÄµÄ¹Ø¼üµÄ×ÖºÍ½á¹û£¬·Åµ½resultÖÐ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ØµÄ½ï¿½ï¿½, ï¿½Ñ¶ï¿½ï¿½ÄµÄ¹Ø¼ï¿½ï¿½ï¿½ÖºÍ½ï¿½ï¿½Åµï¿½resultï¿½ï¿½
     bool parse_subs_reply(void *reply, map<string, string> &result);
 
 public:
     string        _name;
     redisContext  *_redis_context;
-    bool          _is_connect;                 //Á¬½Ó×´Ì¬£ºtrue ´¦ÓÚÁ¬½Ó×´Ì¬£¬false´¦ÓÚ¶Ï¿ª×´Ì¬
-    int           _reconn_timeval;             //ÖØÁ¬µÄÊ±¼ä¼ä¸ô
-    time_t        _last_reconn_time;           //ÉÏ´ÎÖØÁ¬µÄÊ±¼ä
+    bool          _is_connect;                 //ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½true ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½falseï¿½ï¿½ï¿½Ú¶Ï¿ï¿½×´Ì¬
+    int           _reconn_timeval;             //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+    time_t        _last_reconn_time;           //ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 };
 
 #endif /* REDISPOOL_H_ */

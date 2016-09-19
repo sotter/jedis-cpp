@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: 北京中交兴路科技有限公司(2012-2015)
  *   FileName: redis_test.cpp
  *     Author: liubo  2012-12-14
  *Description:
@@ -25,14 +24,14 @@ private:
 	iconv_t cd;
 public:
  
-	// 构造
+	// 锟斤拷锟斤拷
 	CodeConverter(const char *from_charset,const char *to_charset) 
 	{
 		cd = iconv_open(to_charset,from_charset);
 		assert(cd!=(iconv_t)(-1) && cd!=(iconv_t)(0));
 	}
   
-	// 析构
+	// 锟斤拷锟斤拷
 	~CodeConverter() 
 	{
 		iconv_close(cd);

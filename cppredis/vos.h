@@ -1,5 +1,4 @@
 /******************************************************
-*  CopyRight: ±±¾©ÖÐ½»ÐËÂ·¿Æ¼¼ÓÐÏÞ¹«Ë¾(2012-2015)
 *   FileName: vos.h
 *     Author: liubo  2012-7-2 
 *Description:
@@ -33,17 +32,17 @@ typedef long long  int64;
 typedef unsigned long long   uint64;
 
 
-/* INT ÀàÐÍ±íÊ¾´íÎóÂë£¬ÀíÂÛÉÏÀ´½²´íÎóÒÑ¾­×ã¹»ÁË¡£ */
+/* INT ï¿½ï¿½ï¿½Í±ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ã¹»ï¿½Ë¡ï¿½ */
 #define OK          			    0
 #define ERROR                       -1
 
-/*ÒÔ256Îªµ¥Î»·Ö¸î´íÎóÂëµÄÊ¹ÓÃ£¬ 0x00 00 00 00*/
+/*ï¿½ï¿½256Îªï¿½ï¿½Î»ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã£ï¿½ 0x00 00 00 00*/
 #define ERROR_BASE       		     ERROR
 #define ERROR_PARAM     		    (ERROR_BASE - 1)
 #define ERROR_MALLOC    		    (ERROR_BASE - 2)
-#define BUFFER_NO_SPACE             (ERROR_BASE - 3)   //APP¶ÁÐ´»º³åÇøÂúÁË£¬
+#define BUFFER_NO_SPACE             (ERROR_BASE - 3)   //APPï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½
 
-/*10-50 ¸øsocketÓÃ*/
+/*10-50 ï¿½ï¿½socketï¿½ï¿½*/
 #define ERROR_SOCK_BASE              -0x10000
 #define ERROR_SOCK_INIT			    (ERROR_SOCK_BASE - 10)
 #define ERROR_SOCK_BIND			    (ERROR_SOCK_BASE - 11)
@@ -91,15 +90,15 @@ typedef unsigned long long   uint64;
 #define NI_ERR_THREAD_NOTRUNNING			-4
 #define NI_ERR_THREAD_ALREADYRUNNING		-5
 
-//±ÈÒ»°ã¸ß2¸öµÈ¼¶
+//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½È¼ï¿½
 #define NI_THREAD_PRIORITY_HIGHEST			THREAD_PRIORITY_HIGHEST
-//±ÈÒ»°ãÓÅÏÈ¼¶¸ßÒ»¸öµÈ¼¶
+//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½È¼ï¿½
 #define NI_THREAD_PRIORITY_ABOVE_NORMAL		THREAD_PRIORITY_ABOVE_NORMAL
-//Ò»°ãµÈ¼¶
+//Ò»ï¿½ï¿½È¼ï¿½
 #define NI_THREAD_PRIORITY_NORMAL			THREAD_PRIORITY_NORMAL
-//±ÈÒ»°ãµÍÒ»¸öµÈ¼¶
+//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½È¼ï¿½
 #define NI_THREAD_PRIORITY_BELOW_NORMA		THREAD_PRIORITY_BELOW_NORMAL
-//±ÈÒ»°ãµÍ2¸öµÈ¼¶
+//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½È¼ï¿½
 #define NI_THREAD_PRIORITY_LOWEST			THREAD_PRIORITY_LOWEST
 
 
@@ -108,9 +107,9 @@ typedef unsigned long long   uint64;
 #define IO_EXCEPT_EVENT  		4
 
 #define EPOLL_MAX_NUM    		128
-#define EPOLL_EVENT_NUM  		128 	/*epoll ÄÜÍ¬Ê±´¥·¢µÄÊÂ¼þ*/
+#define EPOLL_EVENT_NUM  		128 	/*epoll ï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½*/
 
-#define LISTEN_BACK_LOG         16      /*listenµÄÁ¬½Ó¶ÓÁÐ*/
+#define LISTEN_BACK_LOG         16      /*listenï¿½ï¿½ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½*/
 
 #define __MAKE_CORE		              \
     struct rlimit sLimit;             \

@@ -1,5 +1,4 @@
 /******************************************************
- *  CopyRight: ±±¾©ÖÐ½»ÐËÂ·¿Æ¼¼ÓÐÏÞ¹«Ë¾(2012-2015)
  *   FileName: vos_event.cpp
  *     Author: liubo  2012-7-6 
  *Description:
@@ -132,7 +131,7 @@ int Event::wait_event(int time_out)
 		}
 		else
 		{
-            //Ò»¶¨Òª°Ñerrno.h°üº¬½øÀ´, ²»È»»áÈÏÎªETIMEDOUT ÊÇpthread.hÖÐµÄ¶¨Òå¡£
+            //Ò»ï¿½ï¿½Òªï¿½ï¿½errno.hï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ÎªETIMEDOUT ï¿½ï¿½pthread.hï¿½ÐµÄ¶ï¿½ï¿½å¡£
 			iRes = (iRes == ETIMEDOUT) ?  EVNET_TIMEOUT : EVENT_ERROR;
 		}
 	}
