@@ -46,7 +46,7 @@ class RedisTable;
 class DataCenter: public vos::RunThread {
 public:
 	enum SYN_STATE {
-		normal/* ��״*/, syning/* ����ͬ�� */, toconvert/* ͬ���Ѿ����׼���л����л���ɺ���toconvert״ */, change = 3
+		normal/* 正常状*/, syning/* 正在同步 */, toconvert/* 同步已经完成准夓切换，切换完成后变成toconvert状 */, change = 3
 	};
 
 	DataCenter();
@@ -83,10 +83,10 @@ private:
 	vos::ThreadPool _thread_pool;
 	vos::CRWLock _wrlock;
 	Sharded *_sharded;
-	//ͬ����ʱ��ʹ�õ�?
+	//同步的时候使用的?
 	Sharded *_sharded_new;
 	SYN_STATE _state;
-	Jedis _jedis; //�����÷��������ӵ�jedis����
+	Jedis _jedis; //与配置服务器连接的jedis对象
 	Jedis _subs_jedis;
 };
 
@@ -142,7 +142,7 @@ public:
 
 	virtual string getkey(const char * key);
 
-	//���������ĸ��ӿڣ���Ҫ��д���������ļӼ������÷�������ʵ�x
+	//对于下面四个接口，需要重写，计数器的加减在配置服务器上实玿
 	virtual int decrBy(const char * key, int integer);
 
 	virtual int decr(const char * key);

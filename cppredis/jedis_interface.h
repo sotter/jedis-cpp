@@ -25,12 +25,12 @@ public:
 	virtual ~JedisCommand()
 	{
 	}
-	//replyΪ�յ������Ϊ�Ǵ���ģ���ʱ��һ��c��Ҳ���д�����
+	//reply为空的情况认为是错误的，这时候一般c中也会有错误发生
 	bool check_error(redisContext *c);
 	bool check_error(redisReply *reply);
 
 	virtual string getkey(const char * key) = 0;
-	// ������ʹ�ã����reply��ֵ
+	// 做测试使用，获得reply的值
 	string showreply(void *reply);
 
 	string get_context_addr(redisContext *c);

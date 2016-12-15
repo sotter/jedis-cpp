@@ -18,66 +18,63 @@ using namespace std;
 
 #include "DataCenter.h"
 
-class CodeConverter
-{
+class CodeConverter {
 private:
 	iconv_t cd;
 public:
- 
-	// ����
-	CodeConverter(const char *from_charset,const char *to_charset) 
+
+	// 构造
+	CodeConverter(const char *from_charset, const char *to_charset)
 	{
-		cd = iconv_open(to_charset,from_charset);
-		assert(cd!=(iconv_t)(-1) && cd!=(iconv_t)(0));
+		cd = iconv_open(to_charset, from_charset);
+		assert(cd != (iconv_t)(-1) && cd != (iconv_t)(0));
 	}
-  
-	// ����
-	~CodeConverter() 
+
+	// 析构
+	~CodeConverter()
 	{
 		iconv_close(cd);
 	}
- 
+
 	string convert(string& inbuf)
 	{
 		string strResult;
 
 		size_t inlen = inbuf.length();
 		size_t outlen = inlen * 4;
-		if (inlen==0)
+		if (inlen == 0)
 			return strResult;
 
 		char * outbuf = new char[outlen];
-		memset(outbuf,0,outlen);
-		char * p1 = (char *)inbuf.c_str();
+		memset(outbuf, 0, outlen);
+		char * p1 = (char *) inbuf.c_str();
 		char * p2 = outbuf;
 		char **pin = &p1;
 		char **pout = &p2;
-		int iLen = iconv(cd,pin,&inlen,pout,&outlen);
-		if (iLen>=0)
+		int iLen = iconv(cd, pin, &inlen, pout, &outlen);
+		if (iLen >= 0)
 			strResult = string(outbuf);
 
-	//	cout << strResult << endl;
-		delete []outbuf;
+		//	cout << strResult << endl;
+		delete[] outbuf;
 		return strResult;
-	}	
+	}
 };
 
 string u2g(string u);
 string g2u(string g);
 
-class JedisTest
-{
+class JedisTest {
 public:
 	string show_map(map<string, double>& m)
 	{
 		string str = "map(";
 		map<string, double>::iterator iter = m.begin();
 
-		for (; iter != m.end(); ++iter)
-		{
+		for (; iter != m.end(); ++iter) {
 			str += "first:" + iter->first + ",second:";
 			char buf[128];
-			memset(buf,0,sizeof(buf));
+			memset(buf, 0, sizeof(buf));
 			gcvt(iter->second, 10, buf);
 			str += string(buf) + ";";
 		}
@@ -90,11 +87,10 @@ public:
 		string str = "map(";
 		map<string, double>::iterator iter = m.begin();
 
-		for (; iter != m.end(); ++iter)
-		{
+		for (; iter != m.end(); ++iter) {
 			str += "first:" + u2g(iter->first) + ",second:";
 			char buf[128];
-			memset(buf,0,sizeof(buf));
+			memset(buf, 0, sizeof(buf));
 			gcvt(iter->second, 10, buf);
 			str += string(buf) + ";";
 		}
@@ -107,21 +103,19 @@ public:
 		string str = "map(";
 		map<string, string>::iterator iter = m.begin();
 
-		for (; iter != m.end(); ++iter)
-		{
+		for (; iter != m.end(); ++iter) {
 			str += "first:" + iter->first + ",second:" + iter->second + ";";
 		}
 		str += ")";
 		return str;
 	}
-	
+
 	string show_map_u(map<string, string>& m)
 	{
 		string str = "map(";
 		map<string, string>::iterator iter = m.begin();
 
-		for (; iter != m.end(); ++iter)
-		{
+		for (; iter != m.end(); ++iter) {
 			str += "first:" + u2g(iter->first) + ",second:" + u2g(iter->second) + ";";
 		}
 		str += ")";
@@ -133,34 +127,31 @@ public:
 		string str = "set(";
 		set<string>::iterator iter = s.begin();
 
-		for (; iter != s.end(); ++iter)
-		{
+		for (; iter != s.end(); ++iter) {
 			str += " " + *iter;
 		}
 		str += ")";
 		return str;
 	}
-	
+
 	string show_set_u(set<string>& s)
 	{
 		string str = "set(";
 		set<string>::iterator iter = s.begin();
 
-		for (; iter != s.end(); ++iter)
-		{
+		for (; iter != s.end(); ++iter) {
 			str += " " + u2g(*iter);
 		}
 		str += ")";
 		return str;
 	}
-	
+
 	string show_list(list<string>& l)
 	{
 		string str = "list(";
 		list<string>::iterator iter = l.begin();
 
-		for (; iter != l.end(); ++iter)
-		{
+		for (; iter != l.end(); ++iter) {
 			str += " " + *iter;
 		}
 		str += ")";
@@ -172,21 +163,20 @@ public:
 		string str = "list(";
 		list<string>::iterator iter = l.begin();
 
-		for (; iter != l.end(); ++iter)
-		{
+		for (; iter != l.end(); ++iter) {
 			str += " " + u2g(*iter);
 		}
 		str += ")";
 		return str;
 	}
 
-	void TestCommonFunction(const char *ip, unsigned short port,int mode);
-	
+	void TestCommonFunction(const char *ip, unsigned short port, int mode);
+
 	void TestFunction(const char *ip, unsigned short port);
 
 	void TestCapability(const char *ip, unsigned short port);
 
-	void TestConsistence(const char *ip, unsigned short port,const char * pFileName);
+	void TestConsistence(const char *ip, unsigned short port, const char * pFileName);
 
 	void Read1MString(const char *ip, unsigned short port);
 
@@ -194,134 +184,97 @@ public:
 
 	void TestChinese(const char *ip, unsigned short port);
 
-	void InitExport(const char *ip, unsigned short port);	
+	void InitExport(const char *ip, unsigned short port);
 
-	void TestExport(const char *ip, unsigned short port);	
+	void TestExport(const char *ip, unsigned short port);
 
-	void RunExport(const char *ip, unsigned short port);	
+	void RunExport(const char *ip, unsigned short port);
 
 private:
-	void TestReadString(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value);
+	void TestReadString(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value);
 
-	void TestWriteString(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bCheck);
+	void TestWriteString(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bCheck);
 
-	void TestDelString(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,bool bCheck);
+	void TestDelString(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, bool bCheck);
 
-	void TestReadHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string field,string value);
+	void TestReadHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string field,
+			string value);
 
-	void TestReadHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,map<string,string> mapValue);
-	
-	void TestWriteHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string field,string value,bool bCheck);
+	void TestReadHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			map<string, string> mapValue);
 
-	void TestWriteHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,map<string,string>& mapValue,bool bCheck);
-	
-	void TestDelHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string field,bool bCheck);
+	void TestWriteHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string field,
+			string value, bool bCheck);
 
-	void TestReadList(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bLeft);
+	void TestWriteHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			map<string, string>& mapValue, bool bCheck);
 
-	void TestWriteList(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bLeft,bool bCheck);
+	void TestDelHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string field,
+			bool bCheck);
 
-	void TestWriteList(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,list<string>& listValue,bool bLeft,bool bCheck);
+	void TestReadList(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bLeft);
 
-	void TestDelList(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,int iCount);
+	void TestWriteList(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bLeft, bool bCheck);
 
-	void TestReadSet(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value);
+	void TestWriteList(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			list<string>& listValue, bool bLeft, bool bCheck);
 
-	void TestWriteSet(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bCheck);
+	void TestDelList(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			int iCount);
 
-	void TestWriteSet(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,list<string>& listValue,bool bCheck);	
+	void TestReadSet(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value);
 
-	void TestDelSet(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bCheck);
+	void TestWriteSet(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bCheck);
 
-	void TestReadSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string field,double score);
+	void TestWriteSet(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			list<string>& listValue, bool bCheck);
 
-	void TestReadSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,map<string,double>& mapValue);
-	
-	void TestWriteSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,double score,bool bCheck);
+	void TestDelSet(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bCheck);
 
-	void TestWriteSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,map<string,double>& mapValue,bool bCheck);
+	void TestReadSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string field,
+			double score);
 
-	void TestDelSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,string value,bool bCheck);
+	void TestReadSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			map<string, double>& mapValue);
 
-	void TestInc(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,bool bCheck);
+	void TestWriteSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			double score, bool bCheck);
 
-	void TestDec(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,bool bCheck);
+	void TestWriteSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key,
+			map<string, double>& mapValue, bool bCheck);
 
-	void TestIncBy(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,int iStep,bool bCheck);
+	void TestDelSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, string value,
+			bool bCheck);
 
-	void TestDecBy(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,
-		string key,int iStep,bool bCheck);
+	void TestInc(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, bool bCheck);
 
-	void TestString(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,int mode);
+	void TestDec(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, bool bCheck);
 
-	void TestList(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,int mode);
-	
-	void TestSet(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,int mode);
+	void TestIncBy(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, int iStep,
+			bool bCheck);
 
-	void TestSortset(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,int mode);
-	
-	void TestHash(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable,int mode);
+	void TestDecBy(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, string key, int iStep,
+			bool bCheck);
 
-	void TestVar(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable);
+	void TestString(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, int mode);
 
-	void TestDel(DataCenter& datacenter,
-		RedisDB& redisdb,RedisTable& redistable);	
-	
+	void TestList(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, int mode);
+
+	void TestSet(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, int mode);
+
+	void TestSortset(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, int mode);
+
+	void TestHash(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable, int mode);
+
+	void TestVar(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable);
+
+	void TestDel(DataCenter& datacenter, RedisDB& redisdb, RedisTable& redistable);
+
 //	redistable redistable;
 };
 

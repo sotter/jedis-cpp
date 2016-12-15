@@ -30,7 +30,7 @@ bool Sharded::init(vector<ShardInfo*> &shard_infos)
 
 	Jedis *j = NULL;
 	for (int i = 0; i < (int) shard_infos.size(); i++) {
-		/* ������shard_infos�е���Ϣ���ܴ���һ����Ч��Redis���ӣ���ô��������һ�� */
+		/* 如果这个shard_infos中的信息不能创建一个有效的Redis连接，那么继续尝试下一个 */
 		if ((j = shard_infos[i]->createResource()) == NULL) {
 			delete shard_infos[i];
 			shard_infos[i] = NULL;

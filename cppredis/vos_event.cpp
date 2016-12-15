@@ -125,7 +125,7 @@ int Event::wait_event(int time_out)
 			if (_set_event_count > 0)
 				_set_event_count--;
 		} else {
-			//һ��Ҫ��errno.h�����, ��Ȼ����ΪETIMEDOUT ��pthread.h�еĶ��塣
+			//一定要把errno.h包含进来, 不然会认为ETIMEDOUT 是pthread.h中的定义。
 			iRes = (iRes == ETIMEDOUT) ? EVNET_TIMEOUT : EVENT_ERROR;
 		}
 	} else {

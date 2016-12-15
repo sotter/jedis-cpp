@@ -2,8 +2,8 @@
  *   FileName: vos_thread.h
  *     Author: liubo  2012-7-5 
  *Description:
- *Description: (1)�����ṩ�̷߳���
- *Description: (2)��װwindows���̺߳����ṩ������
+ *Description: (1)给类提供线程服务
+ *Description: (2)封装windows的线程函数，提供方法。
  *******************************************************/
 
 #ifndef VOS_THREAD_H_
@@ -27,7 +27,7 @@ namespace vos
 #define  MAX_THREAD 128
 
 /********************************
- *  ����Linux �� Winodows���ķ�������
+ *  屏蔽Linux 和 Winodows区别的方法函数
  *******************************/
 extern THREAD_T make_thread(void *fun, void *arg);
 extern int wait_thread(THREAD_T tid);
@@ -62,11 +62,11 @@ public:
 	int start();
 
 	/*********************************
-	 * �ڹ涨��ʱ���ڣ��߳����û��ִ���꣬ǿ�н����̡߳�
+	 * 在规定的时间内，线程如果没有执行完，强行结束线程。
 	 * ******************************/
 	int stop(int timeout);
 
-	//�ṩ��Ӧ�ò��ʹ�����õ�
+	//提供给应用层的使用者用的
 	int isexit()
 	{
 		return _exit;
@@ -92,7 +92,7 @@ private:
 public:
 	vos::Event _stop_event;
 	int _type;
-	int _id;            //���б�ʶ��
+	int _id;            //序列标识号
 	THREAD_T _tid;
 	State _state;
 	RunThread *_run_thread;
@@ -103,12 +103,12 @@ class ThreadPool {
 #define max_thread_num 64
 public:
 	/***
-	 * ע���̣߳�type_index��ʶ�̵߳����ͣ� �������͵��߳�ע����ٸ���
+	 * 注册线程，type_index标识线程的类型， 此种类型的线程注册多少个。
 	 */
 	int regist(int type_index, RunThread *run, int num = 1);
 	int start();
 	/*************
-	 * �ڷ��ͽ����ź�timeout��ʱ����,�̻߳�û�н����ǿ��ɱ��.
+	 * 在发送结束信号timeout的时间内,线程还没有结束，变强行杀死.
 	 **********************/
 	int stop(int timeout = 0);
 private:

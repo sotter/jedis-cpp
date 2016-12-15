@@ -119,7 +119,7 @@ int ThreadPool::start()
 	return 0;
 }
 /*************
- * �ڷ��ͽ����ź�timeout��ʱ����,�̻߳�û�н����ǿ��ɱ��.
+ * 在发送结束信号timeout的时间内,线程还没有结束，变强行杀死.
  **********************/
 int ThreadPool::stop(int timeout)
 {

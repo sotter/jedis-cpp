@@ -151,17 +151,7 @@ extern "C" CLogger __g_logger__;
 
 #define INIT_LOG		__g_logger__.init
 #define LOG_SIZE        __g_logger__.setbacksize
-#define dlog1			__g_logger__.log1	// start or stop log
-#define dlog2			__g_logger__.log2	// critical error or fatal error
-#define dlog3			__g_logger__.log3	// warning or notice
-#define dlog4			__g_logger__.log4	// general log
-#define dlog5			__g_logger__.log5	// trace log
-#define dlog6			__g_logger__.log6	// packet
-#define dlog7			__g_logger__.log7	// the devel model
-#define dlog8			__g_logger__.log8	// the devel model
-#define dlog9			__g_logger__.log9	// the devel model
-#define dlog10			__g_logger__.log10	// the devel model
-
+#define dlog1			__g_logger__.log1	// start or stop log#define dlog2			__g_logger__.log2	// critical error or fatal error#define dlog3			__g_logger__.log3	// warning or notice#define dlog4			__g_logger__.log4	// general log#define dlog5			__g_logger__.log5	// trace log#define dlog6			__g_logger__.log6	// packet#define dlog7			__g_logger__.log7	// the devel model#define dlog8			__g_logger__.log8	// the devel model#define dlog9			__g_logger__.log9	// the devel model#define dlog10			__g_logger__.log10	// the devel model
 #ifdef WIN32
 #		if _MSC_VER > 1300
 #			define TRACEF() dlog7("[%s], line:[%d], file[%s]", __func__, __LINE__, __FILE__)

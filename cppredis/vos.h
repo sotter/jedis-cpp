@@ -30,17 +30,16 @@ typedef unsigned uint32;
 typedef long long int64;
 typedef unsigned long long uint64;
 
-/* INT ���ͱ�ʾ�����룬���������������Ѿ��㹻�ˡ� */
+/* INT 类型表示错误码，理论上来讲错误已经足够了。 */
 #define OK          			    0
 #define ERROR                       -1
 
-/*��256Ϊ��λ�ָ�������ʹ�ã� 0x00 00 00 00*/
+/*以256为单位分割错误码的使用， 0x00 00 00 00*/
 #define ERROR_BASE       		     ERROR
 #define ERROR_PARAM     		    (ERROR_BASE - 1)
 #define ERROR_MALLOC    		    (ERROR_BASE - 2)
-#define BUFFER_NO_SPACE             (ERROR_BASE - 3)   //APP��д���������ˣ�
-
-/*10-50 ��socket��*/
+#define BUFFER_NO_SPACE             (ERROR_BASE - 3)   //APP读写缓冲区满了，
+/*10-50 给socket用*/
 #define ERROR_SOCK_BASE              -0x10000
 #define ERROR_SOCK_INIT			    (ERROR_SOCK_BASE - 10)
 #define ERROR_SOCK_BIND			    (ERROR_SOCK_BASE - 11)
@@ -88,15 +87,15 @@ typedef unsigned long long uint64;
 #define NI_ERR_THREAD_NOTRUNNING			-4
 #define NI_ERR_THREAD_ALREADYRUNNING		-5
 
-//��һ���2���ȼ�
+//比一般高2个等级
 #define NI_THREAD_PRIORITY_HIGHEST			THREAD_PRIORITY_HIGHEST
-//��һ�����ȼ���һ���ȼ�
+//比一般优先级高一个等级
 #define NI_THREAD_PRIORITY_ABOVE_NORMAL		THREAD_PRIORITY_ABOVE_NORMAL
-//һ��ȼ�
+//一般等级
 #define NI_THREAD_PRIORITY_NORMAL			THREAD_PRIORITY_NORMAL
-//��һ���һ���ȼ�
+//比一般低一个等级
 #define NI_THREAD_PRIORITY_BELOW_NORMA		THREAD_PRIORITY_BELOW_NORMAL
-//��һ���2���ȼ�
+//比一般低2个等级
 #define NI_THREAD_PRIORITY_LOWEST			THREAD_PRIORITY_LOWEST
 
 #define IO_READ_EVENT    		1
@@ -104,9 +103,9 @@ typedef unsigned long long uint64;
 #define IO_EXCEPT_EVENT  		4
 
 #define EPOLL_MAX_NUM    		128
-#define EPOLL_EVENT_NUM  		128 	/*epoll ��ͬʱ�������¼�*/
+#define EPOLL_EVENT_NUM  		128 	/*epoll 能同时触发的事件*/
 
-#define LISTEN_BACK_LOG         16      /*listen�����Ӷ���*/
+#define LISTEN_BACK_LOG         16      /*listen的连接队列*/
 
 #define __MAKE_CORE		              \
     struct rlimit sLimit;             \

@@ -36,7 +36,7 @@ bool Jedis::init_obj(ShardInfo * shard_info)
 	return init_obj(shard_info->getHost().c_str(), shard_info->getPort());
 }
 
-// ��ʼ������
+// 初始化对象
 bool Jedis::init_obj(const char *ip, unsigned short port)
 {
 	_redis_context = connect((char*) ip, port);
@@ -58,7 +58,7 @@ string Jedis::get_addr()
 	return get_context_addr(_redis_context);
 }
 
-// ���ӷ�����
+// 连接服务器
 redisContext * Jedis::connect(const char *ip, int port)
 {
 	struct timeval tv = { 10, 1000 };
@@ -69,7 +69,7 @@ redisContext * Jedis::connect(const char *ip, int port)
 		FREE_REDIS(c);
 		return NULL;
 	}
-	assert(redisSetTimeout(c,tv) == REDIS_OK);
+	assert(redisSetTimeout(c, tv) == REDIS_OK);
 	return c;
 }
 
@@ -85,7 +85,7 @@ void Jedis::set_timeout(int seconds, int useconds)
 
 bool Jedis::subscribe(vector<string> &channels)
 {
-	set_timeout(0, 0);   //����Jedis��������ʽ�ġ�
+	set_timeout(0, 0);   //将本Jedis做成阻塞式的。
 	string subs_channels = "SUBSCRIBE";
 	for (int i = 0; i < (int) channels.size(); ++i) {
 		subs_channels += " " + channels[i];
@@ -100,7 +100,7 @@ bool Jedis::subscribe(vector<string> &channels)
 
 bool Jedis::subscribe_get_reply(string &channel, string &value)
 {
-	//��������
+	//必须设置
 	set_timeout(10, 0);
 
 	redisReply *subs_reply = NULL;
@@ -151,7 +151,7 @@ bool Jedis::execute(bool iswrite, const char *key, long long &result, const char
 	return ret;
 }
 
-//���漸��execute�������ص�ԭ�򣬴��붼һ���ܷ�ͨ��ģ��ķ�ʽʵ�֣�
+//下面几个execute由于重载的原因，代码都一样，能否通过模板的方式实现？
 bool Jedis::execute(bool iswrite, const char *key, string &result, const char *format, ...)
 {
 	va_list ap;
@@ -236,7 +236,7 @@ bool Jedis::execute(bool iswrite, const char *key, string &result, const char *f
 
 	redisReply *reply = (redisReply *) redisvCommand(_redis_context, format, ap);
 
-	//����ط����ж�reply == NULL �����Բ������coredump
+	//这个地方先判断reply == NULL ，所以不会产生coredump
 	if (check_error(_redis_context) || check_error(reply)) {
 		goto error;
 	}
@@ -259,7 +259,7 @@ bool Jedis::execute(bool iswrite, const char *key, list<string> &result, const c
 
 	redisReply *reply = (redisReply *) redisvCommand(_redis_context, format, ap);
 
-	//����ط����ж�reply == NULL �����Բ������coredump
+	//这个地方先判断reply == NULL ，所以不会产生coredump
 	if (check_error(_redis_context) || check_error(reply)) {
 		goto error;
 	}
@@ -287,7 +287,7 @@ bool Jedis::execute(bool iswrite, const char *key, set<string> &result, const ch
 		return false;
 	redisReply *reply = (redisReply *) redisvCommand(_redis_context, format, ap);
 
-	//����ط����ж�reply == NULL �����Բ������coredump
+	//这个地方先判断reply == NULL ，所以不会产生coredump
 	if (check_error(_redis_context) || check_error(reply)) {
 		goto error;
 	}

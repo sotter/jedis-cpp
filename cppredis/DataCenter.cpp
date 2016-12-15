@@ -77,7 +77,7 @@ int DataCenter::run_thread(int type)
 	vector<string> channels;
 	channels.push_back(sub_key);
 
-	/* һֱ���ģ�ֱ�����ĳɹ�Ϊֹ  */
+	/* 一直订阅，直到订阅成功为止  */
 	while (!_subs_jedis.subscribe(channels)) {
 		dlog1("subscribe fail, try again");
 		sleep(1);
@@ -101,20 +101,20 @@ void DataCenter::handle_subs(string &channel, string &value)
 
 	if (channel == CONFIG_SHARDCHANNEL_KEY) {
 		if (value == SHARD_START_STATUS) {
-			vos::CAutoGuardWR wrlock(_wrlock);       //дͬ��, ��ʱGetSharded�Ĳ���������ס
+			vos::CAutoGuardWR wrlock(_wrlock);       //写同步, 此时GetSharded的操作会阻塞住
 			if (init_sharded(_sharded_new, CONFIG_ADDRESS_KEY)) {
 				dlog1("state convert to syning");
 				_state = syning;
 			}
 		} else if (value == SHARD_NORMAL_STATUS) {
-			vos::CAutoGuardWR wrlock(_wrlock);       //дͬ��, ��ʱGetSharded�Ĳ���������ס
+			vos::CAutoGuardWR wrlock(_wrlock);       //写同步, 此时GetSharded的操作会阻塞住
 			Sharded *temp = _sharded;
 			_sharded->destroy();
 			_sharded = _sharded_new;
 			_sharded_new = temp;
 			_state = normal;
 			dlog1("shard<->shard_new convert finish ");
-		} else if (value == SHARD_CHANGE_STATUS)        //�滻ĳһ̨����,����������ӻ�
+		} else if (value == SHARD_CHANGE_STATUS)        //替换某一台机器,重新生成连接环
 		{
 			vos::CAutoGuardWR wrlock(_wrlock);
 			init_sharded(_sharded, CONFIG_ADDRESS_KEY);
@@ -285,7 +285,7 @@ bool RedisTable::do_jedis_new_execute(Jedis *jedis, bool iswrite, const char *ke
 	bool ret = true;
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			printf("call j->execute \n");
 			ret = j->execute(iswrite, key, format, ap);
@@ -316,7 +316,7 @@ bool RedisTable::execute(bool iswrite, const char *key, const char *format, ...)
 
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			va_list ap;
 			va_start(ap, format);
@@ -350,7 +350,7 @@ bool RedisTable::execute(bool iswrite, const char *key, long long &result, const
 
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			va_list ap;
 			va_start(ap, format);
@@ -384,7 +384,7 @@ bool RedisTable::execute(bool iswrite, const char *key, string &result, const ch
 
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			va_list ap;
 			va_start(ap, format);
@@ -418,7 +418,7 @@ bool RedisTable::execute(bool iswrite, const char *key, list<string> &result, co
 
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			va_list ap;
 			va_start(ap, format);
@@ -452,7 +452,7 @@ bool RedisTable::execute(bool iswrite, const char *key, set<string> &result, con
 
 	if (_data_center->get_state() == DataCenter::syning && iswrite) {
 		Jedis *j = _data_center->get_shardednew()->getShard(key);
-		if (j != NULL && j->get_name() != jedis->get_name()) //������������»��;ɻ��϶�������ͬһ��Jedis����ô�����κβ�����
+		if (j != NULL && j->get_name() != jedis->get_name()) //如果这个数据在新环和旧环上都是落在同一个Jedis上那么不做任何操作。
 				{
 			va_list ap;
 			va_start(ap, format);

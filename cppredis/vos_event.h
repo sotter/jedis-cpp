@@ -40,7 +40,7 @@ public:
 public:
 	void set_event();
 	void pulse_event();
-	//��λ�Ǻ���
+	//单位是毫秒
 	int wait_event(int dwTimeOut);
 	int wait_event_always();
 	bool is_wait_event();

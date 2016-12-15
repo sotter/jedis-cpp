@@ -34,7 +34,7 @@ bool JedisCommand::check_error(redisReply *reply)
 
 	return false;
 }
-//�ݹ������ʾReply�Ľ��, ����ʹ�õ�
+//递归调用显示Reply的结果, 测试使用的
 string JedisCommand::showreply(void *reply)
 {
 	if (reply == NULL)
@@ -220,7 +220,7 @@ int JedisCommand::append(const char * key, const char * value)
 
 string JedisCommand::substr(const char * key, int start, int end)
 {
-	//todo: �����о�  2012-12-13
+	//todo: 后续研究  2012-12-13
 	string ret;
 	execute(false, getkey(key).c_str(), ret, "SUBSTR %s %d %d", getkey(key).c_str(), start, end);
 	return ret;
@@ -409,7 +409,7 @@ list<string> JedisCommand::lrange(const char * key, int start, int end)
 	return ret;
 }
 
-//status const char *���ͣ���Ϊbool����
+//status const char *类型，改为bool类型
 bool JedisCommand::ltrim(const char * key, int start, int end)
 {
 	return execute(false, getkey(key).c_str(), "LTRIM %s %d %d", getkey(key).c_str(), start, end);
@@ -422,7 +422,7 @@ string JedisCommand::lindex(const char * key, int index)
 	return ret;
 }
 
-//status const char *���ͣ���Ϊbool����
+//status const char *类型，改为bool类型
 bool JedisCommand::lset(const char * key, int index, const char * value)
 {
 	return execute(true, getkey(key).c_str(), "LSET %s %d %s", getkey(key).c_str(), index, value);
@@ -574,7 +574,7 @@ int JedisCommand::zrem(const char * key, list<string> &member)
 	return ret;
 }
 
-//todo: �������֤
+//todo: 需测试验证
 double JedisCommand::zincrby(const char * key, double score, const char * member)
 {
 	string ret;
@@ -610,7 +610,7 @@ int JedisCommand::zcard(const char * key)
 	return ret;
 }
 
-//todo: �������֤
+//todo: 需测试验证
 double JedisCommand::zscore(const char * key, const char * member)
 {
 //	long long ret = -1;
@@ -764,7 +764,7 @@ int JedisCommand::rpushx(const char * key, const char * value)
 //	return ret;
 //}
 //
-////���漸��execute�������ص�ԭ�򣬴��붼һ���ܷ�ͨ��ģ��ķ�ʽʵ�֣�
+////下面几个execute由于重载的原因，代码都一样，能否通过模板的方式实现？
 //bool JedisCommand::execute(bool iswrite, const char *key, string &result, const char *format, ...)
 //{
 //	va_list ap;

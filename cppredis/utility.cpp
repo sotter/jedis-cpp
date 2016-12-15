@@ -5,7 +5,7 @@
  *******************************************************/
 #include "utility.h"
 
-// �Զ����ǰ����ָ����
+// 自动拆分前多个分割符处理
 bool utility::split2vec(const string &str, std::vector<std::string> &vec, const std::string split, const int count)
 {
 	if (str.empty())
